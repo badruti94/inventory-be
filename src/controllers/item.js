@@ -96,7 +96,7 @@ exports.itemIn = async (req, res) => {
             type: 'in',
             stock,
             proof_code,
-            stock_after: itemFromDB.stock + stock,
+            stock_after: parseInt(itemFromDB.stock) + parseInt(stock),
             user_id: req.userId,
             item_id: req.params.id,
         })
@@ -126,7 +126,7 @@ exports.itemOut = async (req, res) => {
         const { stock, proof_code } = req.body
 
         const itemFromDB = await item.findByPk(id)
-        if (itemFromDB.stock - stock < 0) {
+        if (parseInt(itemFromDB.stock) - parseInt(stock) < 0) {
             return res.status(401).send({
                 message: "Jumlah barang yang keluar melebihi stok yang ada"
             })
@@ -136,7 +136,7 @@ exports.itemOut = async (req, res) => {
             type: 'out',
             stock,
             proof_code,
-            stock_after: itemFromDB.stock - stock,
+            stock_after: parseInt(itemFromDB.stock) - parseInt(stock),
             user_id: req.userId,
             item_id: req.params.id,
         })
